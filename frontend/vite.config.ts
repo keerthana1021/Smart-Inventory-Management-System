@@ -30,6 +30,11 @@ export default defineConfig({
       }
     })
   ],
+  preview: {
+    // Render injects a different hostname (e.g. *.onrender.com). Vite's preview
+    // host allowlist blocks unknown Host headers unless we open it up.
+    allowedHosts: 'all',
+  },
   server: {
     port: 3000,
     proxy: {

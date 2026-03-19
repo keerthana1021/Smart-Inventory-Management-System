@@ -17,6 +17,8 @@ COPY pom.xml .
 # Copy backend sources
 COPY src ./src
 
+RUN chmod +x ./mvnw
+
 RUN ./mvnw -DskipTests package
 
 FROM eclipse-temurin:17-jre

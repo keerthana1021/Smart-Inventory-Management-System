@@ -1,0 +1,26 @@
+{
+  "categories": [
+    { "name": "Electronics", "description": "Electronic devices and gadgets" },
+    { "name": "Office Supplies", "description": "Stationery and office equipment" },
+    { "name": "Furniture", "description": "Office and warehouse furniture" },
+    { "name": "Safety & PPE", "description": "Safety equipment and personal protective equipment" }
+  ],
+  "suppliers": [
+    { "name": "TechSupply Co", "email": "orders@techsupply.com", "phone": "+91-9876543210", "address": "123 Tech Park, Bangalore" },
+    { "name": "OfficeWorld Ltd", "email": "sales@officeworld.com", "phone": "+91-9876543211", "address": "456 Commerce St, Hyderabad" },
+    { "name": "SafeGuard Inc", "email": "info@safeguard.com", "phone": "+91-9876543212", "address": "789 Industrial Ave, Chennai" }
+  ],
+  "products": [
+    { "sku": "ELEC-001", "name": "Laptop Dell XPS 15", "description": "15-inch business laptop", "categoryIndex": 0, "supplierIndex": 0, "unitPrice": 85000, "currentQuantity": 25, "reorderLevel": 5, "warehouseLocation": "A1-01" },
+    { "sku": "ELEC-002", "name": "Wireless Mouse", "description": "Ergonomic wireless mouse", "categoryIndex": 0, "supplierIndex": 0, "unitPrice": 1200, "currentQuantity": 150, "reorderLevel": 30, "warehouseLocation": "A1-02" },
+    { "sku": "ELEC-003", "name": "USB-C Hub", "description": "7-in-1 USB-C hub", "categoryIndex": 0, "supplierIndex": 0, "unitPrice": 3500, "currentQuantity": 80, "reorderLevel": 15, "warehouseLocation": "A1-03" },
+    { "sku": "OFF-001", "name": "A4 Paper Ream", "description": "500 sheets, 80 gsm", "categoryIndex": 1, "supplierIndex": 1, "unitPrice": 250, "currentQuantity": 200, "reorderLevel": 50, "warehouseLocation": "B1-01" },
+    { "sku": "OFF-002", "name": "Stapler Heavy Duty", "description": "Metal stapler", "categoryIndex": 1, "supplierIndex": 1, "unitPrice": 450, "currentQuantity": 60, "reorderLevel": 20, "warehouseLocation": "B1-02" },
+    { "sku": "OFF-003", "name": "Desk Organizer", "description": "Multi-slot desk tray", "categoryIndex": 1, "supplierIndex": 1, "unitPrice": 899, "currentQuantity": 45, "reorderLevel": 10, "warehouseLocation": "B1-03" },
+    { "sku": "FURN-001", "name": "Office Chair", "description": "Ergonomic office chair", "categoryIndex": 2, "supplierIndex": 1, "unitPrice": 12000, "currentQuantity": 15, "reorderLevel": 3, "warehouseLocation": "C1-01" },
+    { "sku": "FURN-002", "name": "Standing Desk", "description": "Height-adjustable desk", "categoryIndex": 2, "supplierIndex": 1, "unitPrice": 25000, "currentQuantity": 8, "reorderLevel": 2, "warehouseLocation": "C1-02" },
+    { "sku": "SAFE-001", "name": "Safety Helmet", "description": "Industrial safety helmet", "categoryIndex": 3, "supplierIndex": 2, "unitPrice": 650, "currentQuantity": 100, "reorderLevel": 25, "warehouseLocation": "D1-01" },
+    { "sku": "SAFE-002", "name": "Safety Gloves (Pair)", "description": "Cut-resistant gloves", "categoryIndex": 3, "supplierIndex": 2, "unitPrice": 320, "currentQuantity": 4, "reorderLevel": 20, "warehouseLocation": "D1-02" },
+    { "sku": "SAFE-003", "name": "First Aid Kit", "description": "Workplace first aid kit", "categoryIndex": 3, "supplierIndex": 2, "unitPrice": 1200, "currentQuantity": 12, "reorderLevel": 5, "warehouseLocation": "D1-03" }
+  ]
+}

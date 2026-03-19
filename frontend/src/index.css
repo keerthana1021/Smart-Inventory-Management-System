@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @apply bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Date inputs on dark pages: avoid browser “dark” widgets with invisible text on white fields */
+input[type='date'].date-input-visible {
+  color-scheme: light;
+}

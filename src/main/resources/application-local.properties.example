@@ -1,0 +1,5 @@
+# Copy this file to application-local.properties and set your Supabase DB password.
+# Run with: --spring.profiles.active=local
+# (Do not commit application-local.properties; add it to .gitignore.)
+
+spring.datasource.password=your-supabase-database-password-here

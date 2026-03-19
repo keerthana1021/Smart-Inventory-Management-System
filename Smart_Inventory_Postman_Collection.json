@@ -1,0 +1,299 @@
+{
+  "info": {
+    "name": "Smart Inventory Management API",
+    "description": "If Login gives 401: run **Setup** first (body: {\"secret\": \"setup\"}), then run **Login**. Then set the token in Collection variables.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{token}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Auth",
+      "item": [
+        {
+          "name": "Setup (run if Login fails)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"secret\": \"setup\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/setup",
+            "description": "Run this if you get 401 on Login. It creates/resets admin user (password: admin123). Then try Login again."
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login",
+            "description": "Run this first. Copy the 'token' from the response, then paste it in Collection variables (Edit collection → Variables → token)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Categories",
+      "item": [
+        {
+          "name": "List categories",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/categories?page=0&size=50"
+          }
+        },
+        {
+          "name": "Create category",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Electronics\",\n  \"description\": \"Electronic items\"\n}"
+            },
+            "url": "{{baseUrl}}/api/categories"
+          }
+        },
+        {
+          "name": "Get category by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/categories/1"
+          }
+        },
+        {
+          "name": "Update category",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Electronics Updated\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": "{{baseUrl}}/api/categories/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Products",
+      "item": [
+        {
+          "name": "List products",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/products?page=0&size=20"
+          }
+        },
+        {
+          "name": "Create product",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"SKU-001\",\n  \"name\": \"Sample Product\",\n  \"description\": \"Description\",\n  \"categoryId\": 1,\n  \"unitPrice\": 99.99,\n  \"reorderLevel\": 5\n}"
+            },
+            "url": "{{baseUrl}}/api/products"
+          }
+        },
+        {
+          "name": "Get product by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/products/1"
+          }
+        },
+        {
+          "name": "Update product",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"SKU-001\",\n  \"name\": \"Updated Product\",\n  \"description\": \"Updated\",\n  \"categoryId\": 1,\n  \"unitPrice\": 89.99,\n  \"reorderLevel\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/products/1"
+          }
+        },
+        {
+          "name": "Low stock products",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/products/low-stock"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Suppliers",
+      "item": [
+        {
+          "name": "List suppliers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/suppliers?page=0&size=50"
+          }
+        },
+        {
+          "name": "Create supplier",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ABC Supplies\",\n  \"contactPerson\": \"John\",\n  \"email\": \"john@abc.com\",\n  \"phone\": \"1234567890\",\n  \"address\": \"123 Main St\"\n}"
+            },
+            "url": "{{baseUrl}}/api/suppliers"
+          }
+        },
+        {
+          "name": "Get supplier by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/suppliers/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Purchase Orders",
+      "item": [
+        {
+          "name": "List purchase orders",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/purchase-orders?page=0&size=20"
+          }
+        },
+        {
+          "name": "Create purchase order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"supplierId\": 1,\n  \"items\": [\n    { \"productId\": 1, \"quantity\": 10, \"unitPrice\": 99.99 }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/purchase-orders"
+          }
+        },
+        {
+          "name": "Approve purchase order",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/purchase-orders/1/approve"
+          }
+        },
+        {
+          "name": "Get purchase order by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/purchase-orders/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Sales Orders",
+      "item": [
+        {
+          "name": "List sales orders",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/sales-orders?page=0&size=20"
+          }
+        },
+        {
+          "name": "Create sales order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"Jane Doe\",\n  \"customerEmail\": \"jane@example.com\",\n  \"items\": [\n    { \"productId\": 1, \"quantity\": 2, \"unitPrice\": 99.99 }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/sales-orders"
+          }
+        },
+        {
+          "name": "Get sales order by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/sales-orders/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Dashboard & Others",
+      "item": [
+        {
+          "name": "Dashboard stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/dashboard/stats"
+          }
+        },
+        {
+          "name": "Inventory ledger",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ledger?page=0&size=20"
+          }
+        },
+        {
+          "name": "Notifications",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/notifications?page=0&size=20"
+          }
+        },
+        {
+          "name": "Unread count",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/notifications/unread-count"
+          }
+        },
+        {
+          "name": "Audit logs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/audit-logs?page=0&size=50"
+          }
+        },
+        {
+          "name": "List settings",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/settings"
+          }
+        },
+        {
+          "name": "Get setting by key",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/settings/TAX_RATE"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -70,3 +70,7 @@ input[type='date'].date-input-visible::-webkit-calendar-picker-indicator {
     background-position: center top;
   }
 }
+
+.mobile-menu-nav {
+  -webkit-overflow-scrolling: touch;
+}

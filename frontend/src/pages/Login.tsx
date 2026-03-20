@@ -31,7 +31,7 @@ export default function Login() {
     <div
       className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{
-        backgroundImage: "url('/smart_inventory_login_background.png')",
+        backgroundImage: "url('/login-background.svg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

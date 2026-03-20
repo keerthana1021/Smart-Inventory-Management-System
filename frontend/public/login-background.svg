@@ -31,14 +31,14 @@
   <circle cx="1180" cy="690" r="390" fill="url(#goldGlow)"/>
 
   <!-- Subtle warehouse outline -->
-  <g opacity="0.28" stroke="#FCD34D" stroke-width="3" fill="none" stroke-linejoin="round">
+  <g opacity="0.38" stroke="#FCD34D" stroke-width="3" fill="none" stroke-linejoin="round">
     <path d="M290 220L520 95L750 220V485H290V220Z"/>
     <path d="M520 95V485"/>
     <path d="M520 220H750"/>
   </g>
 
   <!-- Subtle barcode lines -->
-  <g opacity="0.25" stroke="#FBBF24" stroke-width="3">
+  <g opacity="0.33" stroke="#FBBF24" stroke-width="3">
     <path d="M980 170H990V640H980V170Z"/>
     <path d="M1008 170H1018V640H1008V170Z"/>
     <path d="M1036 170H1046V640H1036V170Z"/>

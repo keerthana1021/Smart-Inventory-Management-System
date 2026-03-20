@@ -3,7 +3,21 @@ import axios from 'axios'
 // For separate deployments, set `VITE_API_BASE_URL` to your backend origin + `/api/v1`.
 // Example: `https://smart-inventory-backend.onrender.com/api/v1`
 // Note: TS config in this repo may not include Vite's ImportMeta types, so we access via `import.meta as any`.
-const API_BASE = (((import.meta as any).env?.VITE_API_BASE_URL as string | undefined) ?? '/api/v1') as string
+const buildTimeApiBase = (((import.meta as any).env?.VITE_API_BASE_URL as string | undefined) ?? undefined) as
+  | string
+  | undefined
+
+// Fallback for Render deployments:
+// If the frontend is hosted on *.onrender.com but `VITE_API_BASE_URL` was not set during build,
+// use the known backend URL so API calls still work.
+const inferredApiBase =
+  typeof window !== 'undefined' &&
+  window.location.hostname.includes('onrender.com') &&
+  window.location.hostname.includes('smart-inventory-frontend')
+    ? 'https://smart-inventory-management-system-lv2p.onrender.com/api/v1'
+    : undefined
+
+const API_BASE = (buildTimeApiBase ?? inferredApiBase ?? '/api/v1') as string
 
 export const api = axios.create({
   baseURL: API_BASE,

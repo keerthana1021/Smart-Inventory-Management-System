@@ -17,4 +17,18 @@ body {
 /* Date inputs on dark pages: avoid browser “dark” widgets with invisible text on white fields */
 input[type='date'].date-input-visible {
   color-scheme: light;
+  -webkit-text-fill-color: #0f172a;
+}
+
+input[type='date'].date-input-visible::-webkit-datetime-edit,
+input[type='date'].date-input-visible::-webkit-datetime-edit-year-field,
+input[type='date'].date-input-visible::-webkit-datetime-edit-month-field,
+input[type='date'].date-input-visible::-webkit-datetime-edit-day-field {
+  color: #0f172a;
+  -webkit-text-fill-color: #0f172a;
+}
+
+input[type='date'].date-input-visible::-webkit-calendar-picker-indicator {
+  opacity: 0.9;
+  filter: contrast(1.1);
 }

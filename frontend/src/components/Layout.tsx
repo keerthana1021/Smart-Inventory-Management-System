@@ -111,6 +111,22 @@ export default function Layout() {
   }
 
   const toggleTheme = () => setTheme(resolved === 'dark' ? 'light' : 'dark')
+  const appBgStyle =
+    resolved === 'dark'
+      ? {
+          backgroundImage:
+            "linear-gradient(rgba(2,6,23,0.70), rgba(2,6,23,0.78)), url('/smart_inventory_background.svg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }
+      : {
+          backgroundImage:
+            "linear-gradient(rgba(248,250,252,0.82), rgba(241,245,249,0.86)), url('/smart_inventory_background.svg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }
 
   const Sidebar = () => (
     <>
@@ -194,7 +210,7 @@ export default function Layout() {
             {resolved === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
-        <main className="flex-1 overflow-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-900">
+        <main className="flex-1 overflow-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-900" style={appBgStyle}>
           <Outlet />
         </main>
       </div>

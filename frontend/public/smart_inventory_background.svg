@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0A1230"/>
+      <stop offset="0.5" stop-color="#0F1E4A"/>
+      <stop offset="1" stop-color="#08112B"/>
+    </linearGradient>
+    <radialGradient id="goldGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1300 700) rotate(90) scale(360)">
+      <stop stop-color="#F59E0B" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blueGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(330 260) rotate(90) scale(320)">
+      <stop stop-color="#38BDF8" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="2.5" cy="2.5" r="1.4" fill="#FDE68A" fill-opacity="0.13"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#dots)"/>
+  <circle cx="1300" cy="700" r="380" fill="url(#goldGlow)"/>
+  <circle cx="330" cy="260" r="340" fill="url(#blueGlow)"/>
+
+  <g opacity="0.3" stroke="#FCD34D" stroke-width="3" fill="none" stroke-linejoin="round">
+    <path d="M210 220L460 86L710 220V500H210V220Z"/>
+    <path d="M460 86V500"/>
+    <path d="M460 220H710"/>
+  </g>
+
+  <g opacity="0.28" stroke="#FBBF24" stroke-width="3">
+    <path d="M1010 170H1020V660H1010V170Z"/>
+    <path d="M1038 170H1048V660H1038V170Z"/>
+    <path d="M1066 170H1076V660H1066V170Z"/>
+    <path d="M1094 170H1104V660H1094V170Z"/>
+    <path d="M1122 170H1132V660H1122V170Z"/>
+  </g>
+</svg>
+

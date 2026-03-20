@@ -17,7 +17,9 @@ const inferredApiBase =
     ? 'https://smart-inventory-management-system-lv2p.onrender.com/api/v1'
     : undefined
 
-const API_BASE = (buildTimeApiBase ?? inferredApiBase ?? '/api/v1') as string
+// Prefer the inferred Render backend if we're on *.onrender.com, even if
+// VITE_API_BASE_URL was set to a relative path during build.
+const API_BASE = (inferredApiBase ?? buildTimeApiBase ?? '/api/v1') as string
 
 export const api = axios.create({
   baseURL: API_BASE,

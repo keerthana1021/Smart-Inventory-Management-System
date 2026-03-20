@@ -150,11 +150,12 @@ export default function Layout() {
   }
 
   const Sidebar = () => (
-    <>
+    <div className="flex flex-col h-full">
       <div className="p-4 border-b border-slate-200 dark:border-slate-700">
         <h1 className="font-semibold text-black dark:text-white text-lg">Smart Inventory</h1>
       </div>
-      <nav className="flex-1 overflow-y-auto p-2 min-h-0 touch-pan-y overscroll-contain mobile-menu-nav">
+
+      <nav className="flex-1 overflow-y-auto p-2 min-h-0 touch-pan-y overscroll-contain mobile-menu-nav pr-1">
         {visibleNavItems.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
@@ -182,7 +183,8 @@ export default function Layout() {
           </NavLink>
         ))}
       </nav>
-      <div className="mt-auto p-2 pb-[calc(16px+env(safe-area-inset-bottom))] border-t border-slate-200 dark:border-slate-700 space-y-1">
+
+      <div className="flex-none p-2 pb-[calc(12px+env(safe-area-inset-bottom))] border-t border-slate-200 dark:border-slate-700 space-y-1">
         <button
           onClick={() => { setShowPasswordModal(true); setMobileMenuOpen(false) }}
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white transition-colors"
@@ -198,7 +200,7 @@ export default function Layout() {
           Log out
         </button>
       </div>
-    </>
+    </div>
   )
 
   return (

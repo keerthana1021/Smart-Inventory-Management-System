@@ -17,17 +17,19 @@ body {
 /* Date inputs on dark pages: avoid browser “dark” widgets with invisible text on white fields */
 input[type='date'].date-input-visible {
   min-height: 40px;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  color-scheme: light !important;
   /* Force the inner date widget text to follow the input text color. */
-  -webkit-text-fill-color: currentColor;
-  color: currentColor;
+  -webkit-text-fill-color: #0f172a !important;
 }
 
 input[type='date'].date-input-visible::-webkit-datetime-edit,
 input[type='date'].date-input-visible::-webkit-datetime-edit-year-field,
 input[type='date'].date-input-visible::-webkit-datetime-edit-month-field,
 input[type='date'].date-input-visible::-webkit-datetime-edit-day-field {
-  color: currentColor;
-  -webkit-text-fill-color: currentColor;
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
 }
 
 input[type='date'].date-input-visible::-webkit-calendar-picker-indicator {
@@ -36,17 +38,18 @@ input[type='date'].date-input-visible::-webkit-calendar-picker-indicator {
 }
 
 .dark input[type='date'].date-input-visible {
-  color-scheme: dark;
-  -webkit-text-fill-color: currentColor;
-  color: currentColor;
+  background-color: #1f2937 !important;
+  color-scheme: dark !important;
+  color: #e2e8f0 !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
 }
 
 .dark input[type='date'].date-input-visible::-webkit-datetime-edit,
 .dark input[type='date'].date-input-visible::-webkit-datetime-edit-year-field,
 .dark input[type='date'].date-input-visible::-webkit-datetime-edit-month-field,
 .dark input[type='date'].date-input-visible::-webkit-datetime-edit-day-field {
-  color: currentColor;
-  -webkit-text-fill-color: currentColor;
+  color: #e2e8f0 !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
 }
 
 .dark input[type='date'].date-input-visible::-webkit-calendar-picker-indicator {

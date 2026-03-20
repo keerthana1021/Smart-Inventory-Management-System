@@ -28,10 +28,20 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900 px-4">
-      <div className="w-full max-w-md">
+    <div
+      className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
+      style={{
+        backgroundImage: "url('/login-background.svg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div className="absolute inset-0 bg-slate-900/70" />
+      <div className="relative z-10 w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
+            <img src="/logo.svg" alt="Smart Inventory" className="mx-auto mb-4 w-14 h-14" />
             <h1 className="text-2xl font-bold text-slate-800">Smart Inventory Management</h1>
             <p className="text-slate-500 mt-1">Sign in to your account</p>
           </div>

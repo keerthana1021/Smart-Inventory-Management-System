@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { settingsApi } from '../api/client'
 
 type Setting = { settingKey: string; settingValue?: string; description?: string }
 
 export default function Settings() {
+  const outletCtx = useOutletContext<{ openChangePassword: () => void }>()
+  const openChangePassword = outletCtx?.openChangePassword
+
   const [settings, setSettings] = useState<Setting[]>([])
   const [loading, setLoading] = useState(true)
   const [editingKey, setEditingKey] = useState<string | null>(null)
@@ -44,6 +48,14 @@ export default function Settings() {
 
   return (
     <div className="space-y-6">
+      <div className="md:hidden">
+        <button
+          onClick={() => openChangePassword?.()}
+          className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700"
+        >
+          Change Password
+        </button>
+      </div>
       <h1 className="text-2xl font-semibold text-black dark:text-slate-100">System Settings</h1>
       <p className="text-slate-600 dark:text-slate-400">Tax rates, currency, warehouse location, reorder defaults. Admin can edit values.</p>
       {error && (

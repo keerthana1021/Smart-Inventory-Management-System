@@ -184,7 +184,7 @@ export default function Layout() {
         ))}
       </nav>
 
-      <div className="flex-none p-2 pb-[calc(12px+env(safe-area-inset-bottom))] border-t border-slate-200 dark:border-slate-700 space-y-1">
+      <div className="hidden md:flex flex-none p-2 pb-[calc(12px+env(safe-area-inset-bottom))] border-t border-slate-200 dark:border-slate-700 space-y-1">
         <button
           onClick={() => { setShowPasswordModal(true); setMobileMenuOpen(false) }}
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white transition-colors"
@@ -220,6 +220,14 @@ export default function Layout() {
           <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Toggle theme">
             {resolved === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
+          <button
+            onClick={handleLogout}
+            className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200"
+            aria-label="Log out"
+            title="Log out"
+          >
+            <LogOut size={20} />
+          </button>
         </div>
       </div>
 
@@ -249,7 +257,7 @@ export default function Layout() {
           </button>
         </div>
         <main className="app-main-bg flex-1 overflow-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-900">
-          <Outlet />
+          <Outlet context={{ openChangePassword: () => setShowPasswordModal(true) }} />
         </main>
       </div>
 

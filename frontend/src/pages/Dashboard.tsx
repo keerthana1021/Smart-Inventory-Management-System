@@ -101,7 +101,7 @@ export default function Dashboard() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-semibold text-black dark:text-slate-100">Dashboard</h1>
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
               <Calendar size={18} className="text-slate-600 dark:text-slate-300" />
               <div className="relative">
                 <input
@@ -110,11 +110,10 @@ export default function Dashboard() {
                   onChange={(e) => setFrom(e.target.value)}
                   className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                 />
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 md:hidden pointer-events-none text-[11px] font-semibold text-slate-100 bg-slate-900/55 border border-slate-700/60 rounded px-1.5 py-0.5 whitespace-nowrap">
-                  From: {from || '-'}
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 md:hidden pointer-events-none text-[12px] font-semibold text-slate-100 bg-slate-900/90 border border-slate-700/80 rounded px-2 py-0.5 whitespace-nowrap leading-none">
+                  {from || '-'}
                 </span>
               </div>
-              <span className="text-slate-600 dark:text-slate-300">to</span>
               <div className="relative">
                 <input
                   type="date"
@@ -122,8 +121,8 @@ export default function Dashboard() {
                   onChange={(e) => setTo(e.target.value)}
                   className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                 />
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 md:hidden pointer-events-none text-[11px] font-semibold text-slate-100 bg-slate-900/55 border border-slate-700/60 rounded px-1.5 py-0.5 whitespace-nowrap">
-                  To: {to || '-'}
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 md:hidden pointer-events-none text-[12px] font-semibold text-slate-100 bg-slate-900/90 border border-slate-700/80 rounded px-2 py-0.5 whitespace-nowrap leading-none">
+                  {to || '-'}
                 </span>
               </div>
           </div>

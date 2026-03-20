@@ -37,7 +37,7 @@ export default function Login() {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="absolute inset-0 bg-slate-900/70" />
+      <div className="absolute inset-0 bg-slate-900/45" />
       <div className="relative z-10 w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">

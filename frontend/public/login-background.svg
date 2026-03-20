@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0B1220"/>
-      <stop offset="0.55" stop-color="#0F172A"/>
-      <stop offset="1" stop-color="#0B1220"/>
+      <stop stop-color="#0B1020"/>
+      <stop offset="0.45" stop-color="#111827"/>
+      <stop offset="1" stop-color="#1E1B4B"/>
     </linearGradient>
     <radialGradient id="glow1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1230 220) rotate(90) scale(330)">
       <stop stop-color="#4F46E5" stop-opacity="0.35"/>
@@ -13,8 +13,12 @@
       <stop stop-color="#22C55E" stop-opacity="0.25"/>
       <stop offset="1" stop-color="#22C55E" stop-opacity="0"/>
     </radialGradient>
+    <radialGradient id="goldGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1180 690) rotate(90) scale(360)">
+      <stop stop-color="#F59E0B" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
     <pattern id="dots" width="36" height="36" patternUnits="userSpaceOnUse">
-      <circle cx="3" cy="3" r="2" fill="#93C5FD" fill-opacity="0.10"/>
+      <circle cx="3" cy="3" r="2" fill="#FDE68A" fill-opacity="0.14"/>
     </pattern>
   </defs>
 
@@ -24,16 +28,17 @@
   <!-- Glows -->
   <circle cx="1230" cy="220" r="340" fill="url(#glow1)"/>
   <circle cx="410" cy="640" r="420" fill="url(#glow2)"/>
+  <circle cx="1180" cy="690" r="390" fill="url(#goldGlow)"/>
 
   <!-- Subtle warehouse outline -->
-  <g opacity="0.18" stroke="#60A5FA" stroke-width="3" fill="none" stroke-linejoin="round">
+  <g opacity="0.28" stroke="#FCD34D" stroke-width="3" fill="none" stroke-linejoin="round">
     <path d="M290 220L520 95L750 220V485H290V220Z"/>
     <path d="M520 95V485"/>
     <path d="M520 220H750"/>
   </g>
 
   <!-- Subtle barcode lines -->
-  <g opacity="0.18" stroke="#A78BFA" stroke-width="3">
+  <g opacity="0.25" stroke="#FBBF24" stroke-width="3">
     <path d="M980 170H990V640H980V170Z"/>
     <path d="M1008 170H1018V640H1008V170Z"/>
     <path d="M1036 170H1046V640H1036V170Z"/>

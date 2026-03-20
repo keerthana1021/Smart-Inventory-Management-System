@@ -72,6 +72,20 @@ input[type='date'].date-input-visible::-webkit-calendar-picker-indicator {
     background-size: 220% auto;
     background-position: center top;
   }
+
+  /* On mobile (Chrome especially), the native date widget text can render with
+     wrong/hidden contrast. We hide the native text and rely on our overlay value. */
+  input[type='date'].date-input-visible {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  input[type='date'].date-input-visible::-webkit-datetime-edit,
+  input[type='date'].date-input-visible::-webkit-datetime-edit-year-field,
+  input[type='date'].date-input-visible::-webkit-datetime-edit-month-field,
+  input[type='date'].date-input-visible::-webkit-datetime-edit-day-field {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
 }
 
 .mobile-menu-nav {

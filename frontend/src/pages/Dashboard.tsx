@@ -102,20 +102,34 @@ export default function Dashboard() {
         <h1 className="text-2xl font-semibold text-black dark:text-slate-100">Dashboard</h1>
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
-            <Calendar size={18} className="text-slate-600 dark:text-slate-300" />
-            <input
-              type="date"
-              value={from}
-              onChange={(e) => setFrom(e.target.value)}
-              className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
-            />
-            <span className="text-slate-600 dark:text-slate-300">to</span>
-            <input
-              type="date"
-              value={to}
-              onChange={(e) => setTo(e.target.value)}
-              className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
-            />
+              <Calendar size={18} className="text-slate-600 dark:text-slate-300" />
+              <div className="flex flex-col">
+                <input
+                  type="date"
+                  value={from}
+                  onChange={(e) => setFrom(e.target.value)}
+                  className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                />
+                {from && (
+                  <span className="md:hidden mt-1 text-xs text-slate-600 dark:text-slate-300">
+                    {from}
+                  </span>
+                )}
+              </div>
+              <span className="text-slate-600 dark:text-slate-300">to</span>
+              <div className="flex flex-col">
+                <input
+                  type="date"
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
+                  className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                />
+                {to && (
+                  <span className="md:hidden mt-1 text-xs text-slate-600 dark:text-slate-300">
+                    {to}
+                  </span>
+                )}
+              </div>
           </div>
           <button onClick={() => load()} disabled={loading} className="flex items-center gap-2 px-4 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg text-sm font-medium border border-slate-200 dark:border-slate-600 disabled:opacity-50">
             <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />

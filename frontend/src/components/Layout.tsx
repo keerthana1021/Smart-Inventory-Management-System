@@ -154,7 +154,7 @@ export default function Layout() {
       <div className="p-4 border-b border-slate-200 dark:border-slate-700">
         <h1 className="font-semibold text-black dark:text-white text-lg">Smart Inventory</h1>
       </div>
-      <nav className="flex-1 overflow-y-auto p-2">
+      <nav className="flex-1 overflow-y-auto p-2 min-h-0">
         {visibleNavItems.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
@@ -182,7 +182,7 @@ export default function Layout() {
           </NavLink>
         ))}
       </nav>
-      <div className="p-2 border-t border-slate-200 dark:border-slate-700 space-y-1">
+      <div className="p-2 pb-6 border-t border-slate-200 dark:border-slate-700 space-y-1">
         <button
           onClick={() => { setShowPasswordModal(true); setMobileMenuOpen(false) }}
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white transition-colors"
@@ -222,7 +222,7 @@ export default function Layout() {
       </div>
 
       {/* Sidebar - hidden on mobile unless open */}
-      <aside className={`${mobileMenuOpen ? 'fixed inset-0 z-40' : 'hidden'} md:flex md:relative w-64 bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-200 border-r border-slate-200 dark:border-slate-700 flex-col shrink-0`}>
+      <aside className={`${mobileMenuOpen ? 'fixed inset-0 z-40' : 'hidden'} md:flex md:relative w-64 h-screen bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-200 border-r border-slate-200 dark:border-slate-700 flex-col shrink-0`}>
         <div className="md:hidden p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
           <span className="font-semibold text-black dark:text-white">Menu</span>
           <button onClick={() => setMobileMenuOpen(false)} className="p-2"><X size={20} /></button>

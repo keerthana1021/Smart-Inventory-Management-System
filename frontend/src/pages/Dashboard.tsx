@@ -110,11 +110,9 @@ export default function Dashboard() {
                   onChange={(e) => setFrom(e.target.value)}
                   className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                 />
-                {from && (
-                  <span className="md:hidden mt-1 text-xs text-slate-600 dark:text-slate-300">
-                    {from}
-                  </span>
-                )}
+                <span className="md:hidden mt-1 text-[11px] font-semibold text-slate-100 bg-slate-900/55 border border-slate-700/60 rounded px-2 py-0.5 pointer-events-none">
+                  From: {from || '-'}
+                </span>
               </div>
               <span className="text-slate-600 dark:text-slate-300">to</span>
               <div className="flex flex-col">
@@ -124,11 +122,9 @@ export default function Dashboard() {
                   onChange={(e) => setTo(e.target.value)}
                   className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                 />
-                {to && (
-                  <span className="md:hidden mt-1 text-xs text-slate-600 dark:text-slate-300">
-                    {to}
-                  </span>
-                )}
+                <span className="md:hidden mt-1 text-[11px] font-semibold text-slate-100 bg-slate-900/55 border border-slate-700/60 rounded px-2 py-0.5 pointer-events-none">
+                  To: {to || '-'}
+                </span>
               </div>
           </div>
           <button onClick={() => load()} disabled={loading} className="flex items-center gap-2 px-4 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg text-sm font-medium border border-slate-200 dark:border-slate-600 disabled:opacity-50">

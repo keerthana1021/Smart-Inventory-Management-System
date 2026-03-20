@@ -53,7 +53,7 @@ const navItems: Array<{ to: string; label: string; icon: typeof LayoutDashboard;
   { to: '/reorder-suggestions', label: 'Reorder', icon: Package, minRole: 'MANAGER' },
   { to: '/users', label: 'Users', icon: Users, minRole: 'ADMIN' },
   { to: '/notifications', label: 'Notifications', icon: Bell },
-  { to: '/settings', label: 'Settings', icon: Settings, minRole: 'ADMIN' },
+  { to: '/settings', label: 'Settings', icon: Settings },
   { to: '/audit-logs', label: 'Audit Logs', icon: ScrollText, minRole: 'ADMIN' },
 ]
 

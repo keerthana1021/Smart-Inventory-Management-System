@@ -17,6 +17,7 @@ body {
 /* Date inputs on dark pages: avoid browser “dark” widgets with invisible text on white fields */
 input[type='date'].date-input-visible {
   color-scheme: light;
+  min-height: 40px;
   -webkit-text-fill-color: #0f172a;
 }
 
@@ -31,4 +32,39 @@ input[type='date'].date-input-visible::-webkit-datetime-edit-day-field {
 input[type='date'].date-input-visible::-webkit-calendar-picker-indicator {
   opacity: 0.9;
   filter: contrast(1.1);
+}
+
+.dark input[type='date'].date-input-visible {
+  color-scheme: dark;
+  -webkit-text-fill-color: #e2e8f0;
+}
+
+.dark input[type='date'].date-input-visible::-webkit-datetime-edit,
+.dark input[type='date'].date-input-visible::-webkit-datetime-edit-year-field,
+.dark input[type='date'].date-input-visible::-webkit-datetime-edit-month-field,
+.dark input[type='date'].date-input-visible::-webkit-datetime-edit-day-field {
+  color: #e2e8f0;
+  -webkit-text-fill-color: #e2e8f0;
+}
+
+.dark input[type='date'].date-input-visible::-webkit-calendar-picker-indicator {
+  filter: invert(0.95) contrast(1.05);
+}
+
+.app-main-bg {
+  background-image: linear-gradient(rgba(248, 250, 252, 0.74), rgba(241, 245, 249, 0.78)), url('/smart_inventory_background.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.dark .app-main-bg {
+  background-image: linear-gradient(rgba(2, 6, 23, 0.52), rgba(2, 6, 23, 0.58)), url('/smart_inventory_background.svg');
+}
+
+@media (max-width: 768px) {
+  .app-main-bg {
+    background-size: 220% auto;
+    background-position: center top;
+  }
 }

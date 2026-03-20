@@ -141,14 +141,14 @@ export default function Reports() {
               type="date"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
-              className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600"
+              className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
             />
             <span className="text-slate-600 dark:text-slate-300">to</span>
             <input
               type="date"
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600"
+              className="date-input-visible px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
             />
           </div>
           <button

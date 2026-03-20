@@ -19,6 +19,7 @@ import {
   ScrollText,
   LogOut,
   Key,
+  Download,
   Menu,
   X,
   Sun,
@@ -31,6 +32,11 @@ function hasRole(userRoles: string[] | undefined, minRole: string): boolean {
   const minIdx = ROLE_ORDER.indexOf(minRole as (typeof ROLE_ORDER)[number])
   if (minIdx < 0) return true
   return userRoles.some((r) => ROLE_ORDER.indexOf(r as (typeof ROLE_ORDER)[number]) >= minIdx)
+}
+
+type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>
 }
 
 const navItems: Array<{ to: string; label: string; icon: typeof LayoutDashboard; minRole?: string }> = [
@@ -65,6 +71,8 @@ export default function Layout() {
   const [passwordSuccess, setPasswordSuccess] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [unreadNotifications, setUnreadNotifications] = useState(0)
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  const [isInstalled, setIsInstalled] = useState(false)
 
   useEffect(() => {
     if (!user?.id) {
@@ -111,22 +119,35 @@ export default function Layout() {
   }
 
   const toggleTheme = () => setTheme(resolved === 'dark' ? 'light' : 'dark')
-  const appBgStyle =
-    resolved === 'dark'
-      ? {
-          backgroundImage:
-            "linear-gradient(rgba(2,6,23,0.70), rgba(2,6,23,0.78)), url('/smart_inventory_background.svg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }
-      : {
-          backgroundImage:
-            "linear-gradient(rgba(248,250,252,0.82), rgba(241,245,249,0.86)), url('/smart_inventory_background.svg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }
+  useEffect(() => {
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || ((window.navigator as Navigator & { standalone?: boolean }).standalone === true)
+    setIsInstalled(standalone)
+
+    const onBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault()
+      setDeferredPrompt(event as BeforeInstallPromptEvent)
+    }
+
+    const onAppInstalled = () => {
+      setIsInstalled(true)
+      setDeferredPrompt(null)
+    }
+
+    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+    window.addEventListener('appinstalled', onAppInstalled)
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+      window.removeEventListener('appinstalled', onAppInstalled)
+    }
+  }, [])
+
+  const handleInstallApp = async () => {
+    if (!deferredPrompt) return
+    await deferredPrompt.prompt()
+    await deferredPrompt.userChoice
+    setDeferredPrompt(null)
+  }
 
   const Sidebar = () => (
     <>
@@ -188,9 +209,16 @@ export default function Layout() {
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
         <h1 className="font-semibold text-slate-800 dark:text-white">Smart Inventory</h1>
-        <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Toggle theme">
-          {resolved === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
+        <div className="flex items-center gap-1">
+          {!isInstalled && deferredPrompt && (
+            <button onClick={handleInstallApp} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200" aria-label="Install app" title="Install app">
+              <Download size={20} />
+            </button>
+          )}
+          <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Toggle theme">
+            {resolved === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Sidebar - hidden on mobile unless open */}
@@ -206,11 +234,17 @@ export default function Layout() {
       <div className="flex-1 flex flex-col min-h-0">
         {/* Desktop: theme toggle in top bar */}
         <div className="hidden md:flex justify-end p-2 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+          {!isInstalled && deferredPrompt && (
+            <button onClick={handleInstallApp} className="mr-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm flex items-center gap-2 border border-slate-200 dark:border-slate-600">
+              <Download size={16} />
+              Install App
+            </button>
+          )}
           <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300" aria-label="Toggle theme">
             {resolved === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
-        <main className="flex-1 overflow-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-900" style={appBgStyle}>
+        <main className="app-main-bg flex-1 overflow-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-900">
           <Outlet />
         </main>
       </div>

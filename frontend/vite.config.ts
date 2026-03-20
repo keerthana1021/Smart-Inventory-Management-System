@@ -19,7 +19,8 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         icons: [
-          { src: '/vite.svg', sizes: 'any', type: 'image/svg+xml' }
+          { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/logo.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }
         ]
       },
       workbox: {

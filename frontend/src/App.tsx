@@ -19,6 +19,7 @@ import Reports from './pages/Reports'
 import ReorderSuggestions from './pages/ReorderSuggestions'
 import Scan from './pages/Scan'
 import Warehouses from './pages/Warehouses'
+import LowStockProducts from './pages/LowStockProducts'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { token, loading } = useAuth()
@@ -35,6 +36,7 @@ export default function App() {
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="inventory" element={<Inventory />} />
+        <Route path="low-stock-products" element={<LowStockProducts />} />
         <Route path="inventory/:id" element={<ProductDetail />} />
         <Route path="scan" element={<Scan />} />
         <Route path="warehouses" element={<Warehouses />} />

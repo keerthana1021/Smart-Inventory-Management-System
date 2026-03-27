@@ -72,7 +72,7 @@ public class SalesOrderService {
 
         var order = SalesOrder.builder()
                 .orderNumber(orderNumber)
-                .status(SalesOrder.OrderStatus.PENDING)
+                .status(SalesOrder.OrderStatus.CONFIRMED)
                 .customerName(customerName)
                 .customerEmail(customerEmail)
                 .items(orderItems)
@@ -80,12 +80,34 @@ public class SalesOrderService {
                 .createdAt(LocalDateTime.now())
                 .build();
         order = salesOrderRepository.save(order);
+        for (var item : order.getItems()) {
+            Product p = productRepository.findById(item.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+            if (p.getCurrentQuantity() < item.getQuantity())
+                throw new BadRequestException("Insufficient stock for " + p.getSku() + ". Available: " + p.getCurrentQuantity());
+            int newQty = p.getCurrentQuantity() - item.getQuantity();
+            p.setCurrentQuantity(newQty);
+            p.setUpdatedAt(LocalDateTime.now());
+            productRepository.save(p);
+            var tx = InventoryTransaction.builder()
+                    .productId(p.getId())
+                    .transactionType(InventoryTransaction.TransactionType.OUT)
+                    .quantity(-item.getQuantity())
+                    .quantityAfter(newQty)
+                    .unitPrice(item.getUnitPrice())
+                    .referenceType("SALES_ORDER")
+                    .referenceId(order.getId())
+                    .performedById(userId)
+                    .transactionDate(LocalDateTime.now())
+                    .notes("Sales order " + order.getOrderNumber() + " created and auto-confirmed")
+                    .build();
+            transactionRepository.save(tx);
+        }
         auditService.log("CREATE_SALES_ORDER", "SalesOrder", order.getId(), null, order.getOrderNumber());
         notifyUser(
                 userId,
                 "Sales Order Created",
-                "Sales order " + order.getOrderNumber() + " has been created and is pending confirmation.",
-                Notification.NotificationType.ORDER_PENDING,
+                "Sales order " + order.getOrderNumber() + " has been created and confirmed. Stock deducted.",
+                Notification.NotificationType.ORDER_APPROVED,
                 "SALES_ORDER",
                 order.getId()
         );

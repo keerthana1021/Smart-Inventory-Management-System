@@ -24,6 +24,7 @@ import {
   X,
   Sun,
   Moon,
+  AlertTriangle,
 } from 'lucide-react'
 
 const ROLE_ORDER = ['STAFF', 'MANAGER', 'ADMIN'] as const
@@ -42,6 +43,7 @@ type BeforeInstallPromptEvent = Event & {
 const navItems: Array<{ to: string; label: string; icon: typeof LayoutDashboard; minRole?: string }> = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/inventory', label: 'Inventory', icon: Package },
+  { to: '/low-stock-products', label: 'Low Stock Products', icon: AlertTriangle },
   { to: '/scan', label: 'Scan', icon: ScanBarcode },
   { to: '/categories', label: 'Categories', icon: FolderTree, minRole: 'MANAGER' },
   { to: '/suppliers', label: 'Suppliers', icon: Truck, minRole: 'MANAGER' },

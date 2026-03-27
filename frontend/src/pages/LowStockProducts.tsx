@@ -21,7 +21,7 @@ export default function LowStockProducts() {
   const [items, setItems] = useState<LowStockProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [poQty, setPoQty] = useState<Record<string, number>>({})
+  const [poQty, setPoQty] = useState<Record<string, string>>({})
   const [poLoadingById, setPoLoadingById] = useState<Record<string, boolean>>({})
   const [actionMessage, setActionMessage] = useState<string | null>(null)
 
@@ -33,12 +33,12 @@ export default function LowStockProducts() {
       .then((r) => {
         const data = Array.isArray(r.data) ? (r.data as LowStockProduct[]) : []
         setItems(data)
-        const initialQty: Record<string, number> = {}
+        const initialQty: Record<string, string> = {}
         for (const p of data) {
           if (!p.id) continue
           const current = p.currentQuantity ?? 0
           const reorder = p.reorderLevel ?? 0
-          initialQty[p.id] = Math.max(1, reorder - current)
+          initialQty[p.id] = String(Math.max(1, reorder - current))
         }
         setPoQty(initialQty)
       })
@@ -55,7 +55,8 @@ export default function LowStockProducts() {
       setActionMessage(`Supplier is not set for ${product.sku ?? 'this product'}. Please assign supplier first.`)
       return
     }
-    const qty = Math.max(1, Number(poQty[product.id] ?? 1))
+    const rawQty = poQty[product.id] ?? '1'
+    const qty = Math.max(1, parseInt(rawQty, 10) || 1)
     setActionMessage(null)
     setPoLoadingById((prev) => ({ ...prev, [product.id!]: true }))
     try {
@@ -142,10 +143,15 @@ export default function LowStockProducts() {
                         <input
                           type="number"
                           min={1}
-                          value={p.id ? poQty[p.id] ?? 1 : 1}
+                          value={p.id ? poQty[p.id] ?? '1' : '1'}
                           onChange={(e) => {
                             if (!p.id) return
-                            setPoQty((prev) => ({ ...prev, [p.id!]: Math.max(1, parseInt(e.target.value, 10) || 1) }))
+                            setPoQty((prev) => ({ ...prev, [p.id!]: e.target.value }))
+                          }}
+                          onBlur={() => {
+                            if (!p.id) return
+                            const normalized = String(Math.max(1, parseInt(poQty[p.id] ?? '1', 10) || 1))
+                            setPoQty((prev) => ({ ...prev, [p.id!]: normalized }))
                           }}
                           className="w-20 px-2 py-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
                         />

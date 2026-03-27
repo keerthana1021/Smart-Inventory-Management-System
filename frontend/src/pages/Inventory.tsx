@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { productsApi, warehousesApi, categoriesApi, suppliersApi } from '../api/client'
 
@@ -40,6 +40,9 @@ const emptyForm: ProductFormData = {
 }
 
 export default function Inventory() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const highlightId = searchParams.get('highlight')
+  const rowRefs = useRef<Record<string, HTMLTableRowElement | null>>({})
   const { user } = useAuth()
   const canEdit = user?.roles?.some((r: string) => ['ADMIN', 'MANAGER'].includes(r))
   const [products, setProducts] = useState<InventoryProduct[]>([])
@@ -107,6 +110,50 @@ export default function Inventory() {
   useEffect(() => {
     loadProducts()
   }, [page, size, debouncedSearch, warehouseId, categoryId])
+
+  /** Deep link from Scan: /inventory?highlight=<productId> — narrow list and scroll to row */
+  useEffect(() => {
+    if (!highlightId) return
+    let cancelled = false
+    setWarehouseId('')
+    setCategoryId('')
+    productsApi
+      .get(highlightId)
+      .then((r) => {
+        if (cancelled) return
+        const p = r.data as { sku?: string }
+        if (p.sku) {
+          setSearch(p.sku.trim())
+          setPage(0)
+        }
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [highlightId])
+
+  useEffect(() => {
+    if (!highlightId || loading || error) return
+    const match = products.find((p) => p.id != null && String(p.id) === highlightId)
+    if (!match) return
+    const scroll = () => rowRefs.current[highlightId]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    const raf = window.requestAnimationFrame(() => window.requestAnimationFrame(scroll))
+    const t = window.setTimeout(() => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          next.delete('highlight')
+          return next
+        },
+        { replace: true }
+      )
+    }, 4500)
+    return () => {
+      window.cancelAnimationFrame(raf)
+      window.clearTimeout(t)
+    }
+  }, [highlightId, loading, error, products, setSearchParams])
 
   const openAdd = () => {
     setFormData(emptyForm)
@@ -321,8 +368,23 @@ export default function Inventory() {
                 <th className="text-right px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300">Actions</th>
               </tr></thead>
               <tbody>
-                {list.map((p, i) => (
-                  <tr key={String(p.id ?? i)} className="border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/40">
+                {list.map((p, i) => {
+                  const idStr = p.id != null ? String(p.id) : ''
+                  const isHighlighted = highlightId != null && idStr !== '' && highlightId === idStr
+                  return (
+                  <tr
+                    key={String(p.id ?? i)}
+                    ref={(el) => {
+                      if (idStr) rowRefs.current[idStr] = el
+                    }}
+                    id={idStr ? `inventory-row-${idStr}` : undefined}
+                    className={
+                      'border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/40 transition-colors duration-300 ' +
+                      (isHighlighted
+                        ? 'bg-indigo-100/90 dark:bg-indigo-950/50 ring-2 ring-inset ring-indigo-500 dark:ring-indigo-400'
+                        : '')
+                    }
+                  >
                     <td className="px-4 py-3 font-mono text-slate-900 dark:text-slate-100">{p.sku}</td>
                     <td className="px-4 py-3">
                       <Link to={`/inventory/${p.id}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">{p.name}</Link>
@@ -335,7 +397,8 @@ export default function Inventory() {
                       {canEdit && p.id && <button onClick={() => openEdit(String(p.id))} className="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">Edit</button>}
                     </td>
                   </tr>
-                ))}
+                  )
+                })}
               </tbody>
             </table>
             {list.length === 0 && !search && (

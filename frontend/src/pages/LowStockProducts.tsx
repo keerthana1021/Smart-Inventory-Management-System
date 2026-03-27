@@ -1,21 +1,29 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { productsApi } from '../api/client'
+import { productsApi, purchaseOrdersApi } from '../api/client'
+import { useAuth } from '../context/AuthContext'
 
 type LowStockProduct = {
   id?: string
   sku?: string
   name?: string
   categoryName?: string
+  supplierId?: string
+  supplierName?: string
   currentQuantity?: number
   reorderLevel?: number
   stockStatus?: string
 }
 
 export default function LowStockProducts() {
+  const { user } = useAuth()
+  const canCreatePo = user?.roles?.some((r: string) => ['ADMIN', 'MANAGER'].includes(r))
   const [items, setItems] = useState<LowStockProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [poQty, setPoQty] = useState<Record<string, number>>({})
+  const [poLoadingById, setPoLoadingById] = useState<Record<string, boolean>>({})
+  const [actionMessage, setActionMessage] = useState<string | null>(null)
 
   useEffect(() => {
     setLoading(true)
@@ -25,6 +33,14 @@ export default function LowStockProducts() {
       .then((r) => {
         const data = Array.isArray(r.data) ? (r.data as LowStockProduct[]) : []
         setItems(data)
+        const initialQty: Record<string, number> = {}
+        for (const p of data) {
+          if (!p.id) continue
+          const current = p.currentQuantity ?? 0
+          const reorder = p.reorderLevel ?? 0
+          initialQty[p.id] = Math.max(1, reorder - current)
+        }
+        setPoQty(initialQty)
       })
       .catch((err) => {
         setItems([])
@@ -33,11 +49,40 @@ export default function LowStockProducts() {
       .finally(() => setLoading(false))
   }, [])
 
+  const createQuickPo = async (product: LowStockProduct) => {
+    if (!product.id) return
+    if (!product.supplierId) {
+      setActionMessage(`Supplier is not set for ${product.sku ?? 'this product'}. Please assign supplier first.`)
+      return
+    }
+    const qty = Math.max(1, Number(poQty[product.id] ?? 1))
+    setActionMessage(null)
+    setPoLoadingById((prev) => ({ ...prev, [product.id!]: true }))
+    try {
+      await purchaseOrdersApi.create({
+        supplierId: product.supplierId,
+        items: [{ productId: product.id, quantity: qty }],
+      })
+      setActionMessage(`Purchase order created for ${product.sku ?? product.name ?? 'product'} (qty ${qty}).`)
+    } catch (err: any) {
+      setActionMessage(
+        err?.response?.data?.message || err?.message || `Failed to create purchase order for ${product.sku ?? 'product'}.`
+      )
+    } finally {
+      setPoLoadingById((prev) => ({ ...prev, [product.id!]: false }))
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-black dark:text-slate-100">Low Stock Products</h1>
       </div>
+      {actionMessage && (
+        <div className="rounded-lg border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
+          {actionMessage}
+        </div>
+      )}
 
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden text-slate-900 dark:text-slate-100">
         {loading && <div className="p-8 text-center text-slate-600 dark:text-slate-400">Loading...</div>}
@@ -55,9 +100,11 @@ export default function LowStockProducts() {
                 <th className="text-left px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300">SKU</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300">Product</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300">Category</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300">Supplier</th>
                 <th className="text-right px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300">Current Qty</th>
                 <th className="text-right px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300">Reorder Level</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300">Status</th>
+                {canCreatePo && <th className="text-left px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300">Quick Purchase</th>}
               </tr>
             </thead>
             <tbody>
@@ -74,6 +121,7 @@ export default function LowStockProducts() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{p.categoryName ?? '-'}</td>
+                  <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{p.supplierName ?? '-'}</td>
                   <td className="px-4 py-3 text-right tabular-nums font-medium text-slate-900 dark:text-slate-100">{p.currentQuantity ?? 0}</td>
                   <td className="px-4 py-3 text-right tabular-nums text-slate-700 dark:text-slate-300">{p.reorderLevel ?? 0}</td>
                   <td className="px-4 py-3">
@@ -88,6 +136,31 @@ export default function LowStockProducts() {
                       {p.stockStatus ?? 'LOW'}
                     </span>
                   </td>
+                  {canCreatePo && (
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="number"
+                          min={1}
+                          value={p.id ? poQty[p.id] ?? 1 : 1}
+                          onChange={(e) => {
+                            if (!p.id) return
+                            setPoQty((prev) => ({ ...prev, [p.id!]: Math.max(1, parseInt(e.target.value, 10) || 1) }))
+                          }}
+                          className="w-20 px-2 py-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
+                        />
+                        <button
+                          type="button"
+                          disabled={!p.id || !p.supplierId || !!poLoadingById[p.id]}
+                          onClick={() => createQuickPo(p)}
+                          className="px-3 py-1.5 rounded bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 text-sm"
+                          title={!p.supplierId ? 'Set supplier for this product first' : 'Create purchase order'}
+                        >
+                          {p.id && poLoadingById[p.id] ? 'Creating…' : 'Create PO'}
+                        </button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

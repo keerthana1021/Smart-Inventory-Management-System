@@ -36,9 +36,7 @@ export default function LowStockProducts() {
         const initialQty: Record<string, string> = {}
         for (const p of data) {
           if (!p.id) continue
-          const current = p.currentQuantity ?? 0
-          const reorder = p.reorderLevel ?? 0
-          initialQty[p.id] = String(Math.max(1, reorder - current))
+          initialQty[p.id] = ''
         }
         setPoQty(initialQty)
       })
@@ -55,8 +53,16 @@ export default function LowStockProducts() {
       setActionMessage(`Supplier is not set for ${product.sku ?? 'this product'}. Please assign supplier first.`)
       return
     }
-    const rawQty = poQty[product.id] ?? '1'
-    const qty = Math.max(1, parseInt(rawQty, 10) || 1)
+    const rawQty = (poQty[product.id] ?? '').trim()
+    if (!rawQty || !/^\d+$/.test(rawQty)) {
+      setActionMessage('Enter a whole-number quantity (e.g. 200).')
+      return
+    }
+    const qty = parseInt(rawQty, 10)
+    if (qty < 1) {
+      setActionMessage('Quantity must be at least 1.')
+      return
+    }
     setActionMessage(null)
     setPoLoadingById((prev) => ({ ...prev, [product.id!]: true }))
     try {
@@ -141,19 +147,24 @@ export default function LowStockProducts() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <input
-                          type="number"
-                          min={1}
-                          value={p.id ? poQty[p.id] ?? '1' : '1'}
+                          type="text"
+                          inputMode="numeric"
+                          autoComplete="off"
+                          aria-label={`Order quantity for ${p.sku ?? 'product'}`}
+                          placeholder={(() => {
+                            if (!p.id) return 'Qty'
+                            const current = p.currentQuantity ?? 0
+                            const reorder = p.reorderLevel ?? 0
+                            const hint = Math.max(1, reorder - current)
+                            return String(hint)
+                          })()}
+                          value={p.id ? poQty[p.id] ?? '' : ''}
                           onChange={(e) => {
                             if (!p.id) return
-                            setPoQty((prev) => ({ ...prev, [p.id!]: e.target.value }))
+                            const digitsOnly = e.target.value.replace(/\D/g, '')
+                            setPoQty((prev) => ({ ...prev, [p.id!]: digitsOnly }))
                           }}
-                          onBlur={() => {
-                            if (!p.id) return
-                            const normalized = String(Math.max(1, parseInt(poQty[p.id] ?? '1', 10) || 1))
-                            setPoQty((prev) => ({ ...prev, [p.id!]: normalized }))
-                          }}
-                          className="w-20 px-2 py-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
+                          className="w-24 min-w-[5.5rem] px-2 py-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 tabular-nums"
                         />
                         <button
                           type="button"

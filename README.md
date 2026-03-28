@@ -227,15 +227,6 @@ Default UI: `http://localhost:3000` (Vite proxies `/api` to `8080`).
 
 ---
 
-## Docker (backend)
-
-```bash
-docker build -t smart-inventory-api .
-docker run -p 8080:8080 -e MONGODB_URI=... -e JWT_SECRET=... smart-inventory-api
-```
-
----
-
 ## Further reading
 
 - **`API_ENDPOINTS.md`** — full REST path reference.
